@@ -48,3 +48,42 @@ john match {
   case _ => println("unknown person")
 }
 ```
+
+
+## Matching with guard
+```scala
+abstract class Notification
+
+case class Email(sender: String, title: String, body: String) extends Notification
+case class SMS(caller: String, message: String) extends Notification
+case class VoiceRecording(contactName: String, link: String) extends Notification
+
+def showNotification(notification: Notification) = {
+  notification match {
+    case Email(sender, title, _) =>
+    	println(s"$sender sent an email with the title $title")
+    case SMS(caller, message) =>
+    	println(s"received $message from $caller")
+    case VoiceRecording(contactName, link) =>
+    	println(s"got voice recording $contactName with $link")
+  	case _ =>
+    	println("unknown notification")
+  }
+}
+val someSMS = SMS("+123456789", "hi")
+showNotification(someSMS)
+val someVoice = VoiceRecording("john", "link")
+showNotification(someVoice)
+
+
+def showImportantNotification(notification: Notification, importantPeopleInfo: Seq[String]) = {
+  notification match {
+    case SMS(num, msg) if importantPeopleInfo.contains(num) =>
+    	println(s"important sms from $num with message $msg")
+    case _ => showNotification(notification)
+  }
+}
+
+val importantPeopleInfo = Seq("+123456789")
+showImportantNotification(someSMS, importantPeopleInfo)
+```
