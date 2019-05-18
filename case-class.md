@@ -8,3 +8,14 @@ println(p2)
 
 println(p1 == p3)
 ```
+
+## Copy
+
+```scala
+case class Message(msg: String, from: String)
+
+val msg1 = Message("hi", "john")
+val msg2 = msg1.copy(msg="hello")
+println(msg1)
+println(msg2)
+```
